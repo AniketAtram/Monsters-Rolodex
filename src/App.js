@@ -5,34 +5,52 @@ class App extends Component {
         super();
 
         this.state = {
-            monsters: []
+            monsters: [],
+            searchString: ''
         };
     }
+
     componentDidMount() {
         fetch('https://jsonplaceholder.typicode.com/users')
             .then((response) => response.json())
             .then((users) => this.setState(
                 () => {
                     return { monsters: users }
-                },
-                () => {
-                    console.log(this.state);
-                }));
+                }
+                ));
     }
 
+    onInputChangeHandler = (e)=>{
+        let searchString = e.target.value.toLocaleLowerCase();
+        this.setState({searchString})
+    };
 
     render() {
+        const { monsters, searchString } = this.state;
+        const { onInputChangeHandler } = this;
+
+        const filteredData = monsters.filter((monster)=>{
+            return monster.name.toLocaleLowerCase().includes(searchString);
+        });
         return (
-            <>
-                <h1>Hello World</h1>
+            <div>
+                <input
+                className='input-bar'
+                type="search"
+                placeholder='Enter Name'
+                onChange={onInputChangeHandler}
+                />
                 {
-                    this.state.monsters.map((monster) =>{ 
-                        return <h1>{monster.name}</h1> 
-                        }
-                    )
+                    filteredData.map((monster) => (
+                    <div key={monster.id}>
+                        <h1>
+                            {monster.name}
+                        </h1>
+                    </div> 
+                    ))
                 }
-            </>
-        );
+            </div>
+        )
     }
 }
 

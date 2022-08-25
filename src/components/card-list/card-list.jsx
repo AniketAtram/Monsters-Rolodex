@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
+import './card-style.css';
+import './card-list-style.css';
 class CardList extends Component {
    
     render() { 
         let { filteredData } = this.props;
         return (
-            <>
+            <div className='card-list'>
                 {
                     filteredData.map((monster) => (
-                    <div key={monster.id}>
-                        <h1>
-                            {monster.name}
-                        </h1>
+                    <div className='card-container' key={monster.id}>
+                        <img src={`https://robohash.org/${monster.id}?set=set2`} alt={monster.name} />
+                        <h2>{monster.name}</h2>
+                        <p>{monster.email}</p>
                     </div> 
                     ))
                 }
-            </>
+            </div>
         );
     }
 }
